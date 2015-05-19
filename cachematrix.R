@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Building the functions makeCacheMatrix & cachesolve to store matrices & their reverse in cache
+##
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+## function to cache a matrix and its reverse
+makeCacheMatrix <- function(x = numeric()) {
+        a <- NULL
+        setMatrix <- function(y) {
+                x <<- y
+                a <<- NULL
+        }
+        getMatrix <- function() x
+        setSolve <- function(solve) a <<- solve
+        getSolve <- function() a
+        list(setMatrix = setMatrix, getMatrix = getMatrix,
+             setSolve = setSolve, getSolve = getSolve)
 }
 
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+## cacheSolve returns the cached reverse of the matrix if exists
+## or calculates it then stores the result in cache
+cacheSolve <- function(mkCacheM, ...) {
+        svm <- mkCacheM$getSolve()
+        if(!is.null(svm)) {
+                message("getting cached solved matrix")
+                return(svm)
+        } else {
+                message("not cached reverse matrix")
+                blibli <- mkCacheM$getMatrix()
+                svm <- solve(blibli)
+                mkCacheM$setSolve(svm)
+                svm
+        }
+        ## Returns a matrix that is the inverse of 'x'
 }
